@@ -1,0 +1,1871 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Austin Yardage">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#1F5E3A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Austin Yardage Books</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1EA; --panel:#FFFFFF; --ink:#17261E; --mute:#52645A; --line:#CDD6CB;
+  --accent:#1F5E3A; --accent-ink:#FFFFFF; --soft:#E1E9DF;
+  --crit:#B83227; --mod:#9A6A12; --low:#52645A; --water:#2F79A6; --sand:#B89B4C;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1914; --panel:#17251D; --ink:#E7EEE6; --mute:#9DB0A2; --line:#2A3C31;
+    --accent:#5BB37E; --accent-ink:#0F1914; --soft:#1F3126;
+    --crit:#F0705F; --mod:#E0B04F; --low:#9DB0A2; --water:#6DB3DB; --sand:#CDB873;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1914; --panel:#17251D; --ink:#E7EEE6; --mute:#9DB0A2; --line:#2A3C31;
+  --accent:#5BB37E; --accent-ink:#0F1914; --soft:#1F3126;
+  --crit:#F0705F; --mod:#E0B04F; --low:#9DB0A2; --water:#6DB3DB; --sand:#CDB873;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 'Source Serif 4',Georgia,'Times New Roman',serif}
+.num,h1,h2,h3,.tab,.chip,.hbtn,.seg button,th,.big{font-family:'Barlow Condensed','Arial Narrow','Helvetica Neue',Arial,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 40px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px 8px}
+.top-in{max-width:560px;margin:0 auto}
+.row{display:flex;align-items:center;gap:10px}
+.back{border:0;background:var(--soft);border-radius:10px;padding:8px 12px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600}
+h1{font-size:28px;line-height:1.1;margin:0;font-weight:700;letter-spacing:.2px}
+h2{font-size:24px;margin:26px 0 8px;font-weight:700}
+h3{font-size:19px;margin:0;font-weight:600}
+p{margin:0 0 12px}
+.mute{color:var(--mute)}
+.seg{display:flex;gap:6px;margin-top:10px;overflow-x:auto;padding-bottom:2px}
+.seg button{flex:1 0 auto;border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 14px;font-size:18px;font-weight:600;display:flex;align-items:center;gap:7px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.dot{width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(0,0,0,.35);display:inline-block;flex:none}
+.tabs{display:flex;margin-top:10px;border-bottom:1px solid var(--line)}
+.tab{flex:1;border:0;background:none;padding:8px 0;font-size:19px;font-weight:600;color:var(--mute);border-bottom:3px solid transparent}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:14px}
+.course{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:10px}
+.course.off{opacity:.55;cursor:default}
+.course .big{font-size:24px;font-weight:700;line-height:1.15}
+.hstrip{display:flex;gap:6px;overflow-x:auto;padding:12px 0 4px}
+.hbtn{flex:0 0 auto;min-width:42px;height:42px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);font-size:21px;font-weight:600;position:relative}
+.hbtn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hbtn i{position:absolute;top:3px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--crit)}
+.hhead{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.hnum{font-size:76px;line-height:.9;font-weight:700}
+.hmeta{text-align:right;font-family:'Barlow Condensed',sans-serif}
+.hmeta .y{font-size:44px;font-weight:700;line-height:1}
+.hmeta .s{font-size:18px;color:var(--mute);font-weight:500}
+svg.lad{width:100%;height:auto;display:block;margin-top:8px}
+.lad .base{stroke:var(--line);stroke-width:5;stroke-linecap:round}
+.lad .seg1{stroke:var(--accent);stroke-width:5;stroke-linecap:round}
+.lad .mk{fill:var(--panel);stroke:var(--accent);stroke-width:3}
+.lad text{fill:var(--ink);font-family:'Barlow Condensed',Arial,sans-serif;font-size:15px;font-weight:600;text-anchor:middle}
+.lad text.lt{fill:var(--mute);font-weight:500}
+.lad .flag{fill:var(--crit)}
+.shots{margin:6px 0 0;padding:0;list-style:none}
+.shots li{display:grid;grid-template-columns:84px 1fr auto;gap:8px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line)}
+.shots li:first-child{border-top:0}
+.shots .lab{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--mute);font-weight:600}
+.shots .cl{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;white-space:nowrap}
+.shots .lf{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:600;text-align:right}
+.haz{border-left:5px solid var(--low);padding:2px 0 2px 12px;margin:12px 0}
+.haz.crit{border-color:var(--crit)}.haz.mod{border-color:var(--mod)}
+.haz b{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;display:block}
+.haz .sev{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;color:var(--mute)}
+.note{font-size:16px;color:var(--mute)}
+.aimnote{background:var(--soft);border-radius:10px;padding:10px 12px;margin-top:12px}
+.aimnote b{font-family:'Barlow Condensed',sans-serif;font-size:19px}
+.pager{display:flex;gap:10px;margin-top:16px}
+.pager button{flex:1;border:1.5px solid var(--line);background:var(--panel);border-radius:12px;padding:12px;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:17px}
+th{font-size:16px;text-align:left;color:var(--mute);font-weight:600;padding:6px 4px;border-bottom:1px solid var(--line)}
+td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:baseline}
+td.n,th.n{text-align:right}
+td.num{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:600}
+.bag{display:grid;grid-template-columns:1fr 72px 72px;gap:8px;align-items:center}
+.bag input{width:100%;font:600 20px 'Barlow Condensed',Arial,sans-serif;padding:8px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);text-align:center}
+.btn{border:1.5px solid var(--accent);background:none;color:var(--accent);border-radius:10px;padding:8px 14px;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:600;margin-top:12px}
+.dc li{margin:6px 0}
+a{color:var(--accent)}
+.warn{border:1.5px dashed var(--mod);border-radius:10px;padding:8px 12px;font-size:16px;margin-top:12px}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in" id="top"></div></header>
+<main class="wrap" id="app"></main>
+
+<script>
+/* ============ ENGINE ============ */
+/* Golfer: right-handed, relatively straight, 6'4" 185 lb.
+   Bag: Ping G440 driver, 4 wood, 3 wood, 3 hybrid; TaylorMade P790 5 iron to A wedge; 54 and 58 degree wedges.
+   Every distance below is an ASSUMPTION (total yards with roll, low to high). Edit them on any Summary page. */
+var CLUB_ORDER=['drv','3w','4w','3h','5i','6i','7i','8i','9i','pw','aw','w54','w58'];
+var DEFAULT_BAG={drv:[245,265],'3w':[228,242],'4w':[212,225],'3h':[198,210],'5i':[180,190],'6i':[170,178],'7i':[158,166],'8i':[146,154],'9i':[134,142],pw:[122,130],aw:[108,116],w54:[92,102],w58:[75,88]};
+var CLUB_LABEL={drv:'Driver','3w':'3 wood','4w':'4 wood','3h':'3 hybrid','5i':'5 iron','6i':'6 iron','7i':'7 iron','8i':'8 iron','9i':'9 iron',pw:'Pitching wedge',aw:'A wedge',w54:'54 degree',w58:'58 degree'};
+var CLUB_SHORT={drv:'Dr','3w':'3W','4w':'4W','3h':'3H','5i':'5i','6i':'6i','7i':'7i','8i':'8i','9i':'9i',pw:'PW',aw:'AW',w54:'54',w58:'58'};
+var CLUB_BRAND={drv:'Ping G440','3w':'Ping G440','4w':'Ping G440','3h':'Ping G440','5i':'TaylorMade P790','6i':'TaylorMade P790','7i':'TaylorMade P790','8i':'TaylorMade P790','9i':'TaylorMade P790',pw:'TaylorMade P790',aw:'TaylorMade P790',w54:'Your wedge',w58:'Your wedge'};
+var TEE_LIST=['drv','3w','4w','3h','5i','6i','7i','8i','9i','pw','aw'];
+var APPROACH_LIST=['3w','4w','3h','5i','6i','7i','8i','9i','pw','aw','w54','w58'];
+var LAYUP_LIST=['3w','4w','3h','5i','6i','7i','8i','9i','pw','aw'];
+var LEAVE_MIN=90;      /* off the tee, never hit past the point that leaves less than this */
+var LEAVE_TARGET=100;  /* a layup aims to leave about this many yards in */
+var bag=JSON.parse(JSON.stringify(DEFAULT_BAG));
+function lo(c){return bag[c][0]}
+function mid(c){return (bag[c][0]+bag[c][1])/2}
+/* Par goal goes for the green from a 5 iron distance. Bogey goal only from a 7 iron distance. */
+function reach(){return state.goal==='par'?mid('5i'):mid('7i')}
+function teeClub(hole,yds){
+  if(hole.tee) return hole.tee;
+  for(var i=0;i<TEE_LIST.length;i++){ if(mid(TEE_LIST[i])<=yds-LEAVE_MIN) return TEE_LIST[i]; }
+  return 'aw';
+}
+function pickApproach(r,carry){
+  if(carry){
+    var ok=APPROACH_LIST.filter(function(c){return lo(c)>=r}).sort(function(a,b){return mid(a)-mid(b)});
+    return ok[0]||'3w';
+  }
+  return APPROACH_LIST.slice().sort(function(a,b){return Math.abs(mid(a)-r)-Math.abs(mid(b)-r)})[0];
+}
+function plan(hole,yds){
+  var shots=[],left=yds,pos=0;
+  if(hole.par===3){
+    var c=pickApproach(left,hole.carry);
+    var d=hole.carry?lo(c):mid(c);
+    shots.push({label:'Tee shot',club:c,dist:yds,cd:Math.round(d),isCarry:!!hole.carry,left:0,pos:yds,noclear:!!(hole.carry&&lo(c)<left)});
+    return shots;
+  }
+  var tc=teeClub(hole,yds), td=mid(tc);
+  left-=td; pos+=td;
+  shots.push({label:'Tee shot',club:tc,dist:Math.round(td),left:Math.round(left),pos:pos});
+  var n=0;
+  while(left>reach()&&n<3){
+    var cap=hole.secondMax||'3w', allowed=LAYUP_LIST.slice(LAYUP_LIST.indexOf(cap));
+    var target=left-LEAVE_TARGET, pick=null;
+    for(var i=0;i<allowed.length;i++){ if(mid(allowed[i])<=target){pick=allowed[i];break} }
+    if(!pick) pick=allowed[allowed.length-1];
+    var dd=mid(pick); left-=dd; pos+=dd; n++;
+    shots.push({label:'Layup',club:pick,dist:Math.round(dd),left:Math.round(left),pos:pos});
+  }
+  var ac=pickApproach(left,false);
+  shots.push({label:'Approach',club:ac,dist:Math.round(left),left:0,pos:yds});
+  return shots;
+}
+
+/* ============ COURSE DATA ============ */
+var COURSES=[
+ {
+  "id": "plumcreek",
+  "name": "Plum Creek Golf Club",
+  "short": "Plum Creek",
+  "place": "Kyle. Links-style Hill Country course, designer per GolfPass: Roy Bechtol.",
+  "homeTee": "Forest",
+  "tees": [
+   {
+    "name": "Forest",
+    "color": "#3B7D4F",
+    "rating": "70.3 / 126",
+    "y": [
+     361,
+     592,
+     366,
+     190,
+     376,
+     415,
+     348,
+     131,
+     542,
+     164,
+     480,
+     376,
+     150,
+     370,
+     489,
+     428,
+     202,
+     407
+    ]
+   },
+   {
+    "name": "Forward",
+    "color": "#8A6FB0",
+    "rating": "rating not found",
+    "y": [
+     302,
+     498,
+     336,
+     169,
+     302,
+     378,
+     282,
+     102,
+     457,
+     130,
+     404,
+     338,
+     118,
+     314,
+     443,
+     380,
+     125,
+     369
+    ]
+   }
+  ],
+  "par": [
+   4,
+   5,
+   4,
+   3,
+   4,
+   4,
+   4,
+   3,
+   5,
+   3,
+   5,
+   4,
+   3,
+   4,
+   5,
+   4,
+   3,
+   4
+  ],
+  "hcp": [
+   13,
+   1,
+   11,
+   15,
+   9,
+   3,
+   7,
+   17,
+   5,
+   16,
+   6,
+   12,
+   18,
+   2,
+   10,
+   4,
+   8,
+   14
+  ],
+  "howItPlays": [
+   "A links-style course in Kyle cut through live oaks, limestone and wildflower pastures. The course describes itself as designed so no two fairways touch, so each hole feels like its own corridor.",
+   "Forest is the default tee: 6,387 yards at 70.3 / 126, a good length for a driver around 255. The Forward set at 5,447 is the shorter option.",
+   "Only these two sets have hole-by-hole yardages so far. The Black, Blue and White sets need a scorecard photo to add. Hole shapes are not mapped, so aim notes are defaults."
+  ],
+  "footnote": "The renovation turned the 10th into a par 3, so older scorecards show par 72 and 7,132 yards. This book uses the current par 71.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "Forest tee yardage, par and handicap from a 2024 event scorecard. GolfPass handicap row matches.",
+    "Forward set yardage is listed as the women's yardage on that same scorecard."
+   ],
+   "unknown": [
+    "Black, Blue and White hole yardages, plus ratings for Forward.",
+    "Hole shapes, hazards and the creek position on 2."
+   ]
+  },
+  "links": [
+   [
+    "Event scorecard (NCCGA, 2024)",
+    "https://nccga.org/app/golf-tournaments/6533/tee_times/round/1"
+   ],
+   [
+    "GolfPass scorecard",
+    "https://www.golfpass.com/courses/22874-plum-creek-golf-club/scorecard-and-layout"
+   ],
+   [
+    "18Birdies profile",
+    "https://18birdies.com/golf-courses/club/8bc4b9a0-86ac-11e4-8c28-020000005b00/plum-creek-golf-course"
+   ]
+  ],
+  "H": {
+   "2": {
+    "secondMax": "3h",
+    "haz": [
+     [
+      "crit",
+      "Creek crosses the second shot",
+      "GolfPass describes natural brush lining a narrow fairway and a creek cutting across the lane on your second shot."
+     ]
+    ],
+    "verify": "That description dates from when the hole played 659 yards. The creek distance from your layup spot is not verified.",
+    "aim": "Narrow with brush on both sides, so favor the middle of the fairway and take a club you trust to hold the line.",
+    "tee": "3w"
+   },
+   "10": {
+    "carry": false,
+    "haz": [
+     [
+      "low",
+      "Recently converted to a par 3",
+      "The renovation turned the old 10th into a par 3. Older reviews and scorecards show a different par here."
+     ]
+    ],
+    "verify": "Hazards on this hole are not documented yet."
+   }
+  }
+ },
+ {
+  "id": "kissing",
+  "name": "Kissing Tree Golf Club",
+  "short": "Kissing Tree",
+  "place": "San Marcos. Opened 2018, Troon-managed, in a senior community with public tee times.",
+  "homeTee": "Back",
+  "tees": [
+   {
+    "name": "Back",
+    "color": "#2F6DB5",
+    "rating": "71.8 / 131",
+    "y": [
+     311,
+     170,
+     538,
+     182,
+     555,
+     418,
+     405,
+     367,
+     325,
+     349,
+     419,
+     211,
+     449,
+     571,
+     138,
+     372,
+     505,
+     287
+    ]
+   },
+   {
+    "name": "KT",
+    "color": "#C23A2B",
+    "rating": "69.3 / 126",
+    "y": [
+     281,
+     160,
+     493,
+     165,
+     521,
+     396,
+     381,
+     335,
+     306,
+     328,
+     391,
+     171,
+     414,
+     536,
+     125,
+     344,
+     473,
+     263
+    ]
+   },
+   {
+    "name": "Legends",
+    "color": "#E0C23A",
+    "rating": "66.6 / 119",
+    "y": [
+     253,
+     112,
+     446,
+     144,
+     486,
+     364,
+     357,
+     299,
+     280,
+     303,
+     359,
+     146,
+     378,
+     505,
+     105,
+     321,
+     438,
+     241
+    ]
+   }
+  ],
+  "par": [
+   4,
+   3,
+   5,
+   3,
+   5,
+   4,
+   4,
+   4,
+   4,
+   4,
+   4,
+   3,
+   4,
+   5,
+   3,
+   4,
+   5,
+   4
+  ],
+  "hcp": [
+   16,
+   10,
+   8,
+   18,
+   2,
+   6,
+   4,
+   12,
+   14,
+   15,
+   3,
+   7,
+   1,
+   5,
+   17,
+   9,
+   11,
+   13
+  ],
+  "howItPlays": [
+   "A Hill Country layout in San Marcos that opened in 2018, built in a senior community with public tee times. Reviewers mention blind shots, elevated tee boxes, fast contoured greens, and a handful of short par 4s (1, 9 and 18).",
+   "The default tee is Back at 6,572 yards (71.8 / 131). KT at 6,083 (69.3 / 126) is the shorter option. The plan clubs down on the short fours (1, 9 and 18) to keep a full wedge in.",
+   "Hole shapes are not mapped, so aim notes are defaults. A Forward set (4,998 yards) exists but has no hole-by-hole yardages loaded."
+  ],
+  "footnote": "The Back tee shows 71.8 on the tee list and 71.6 on the hole table. This book uses 71.8.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "Back, KT and Legends: yardage, par, handicap, rating and slope from Golf Advisor. 18Birdies matches the handicap and Back yardage. The course site was not read.",
+    "Legends has a separate women's rating of 70.9 / 122 that is not shown."
+   ],
+   "unknown": [
+    "Forward set hole yardages.",
+    "Hole shapes, which holes have water (one site counts 4 water hazards and 14 bunkers), and which holes are blind."
+   ]
+  },
+  "links": [
+   [
+    "Golf Advisor scorecard",
+    "https://www.golfadvisor.com/courses/38477-kissing-tree-golf-club/"
+   ],
+   [
+    "18Birdies profile",
+    "https://18birdies.com/golf-courses/club/3b1ad640-0229-11e9-bfdf-0680a328ea36/kissing-tree-golf-club"
+   ]
+  ],
+  "H": {
+   "1": {
+    "haz": [
+     [
+      "low",
+      "Short par 4",
+      "Back 311, KT 281. A GolfPass reviewer lists it as one of three short fours. The plan clubs down off the tee to keep a full wedge in."
+     ]
+    ]
+   },
+   "9": {
+    "haz": [
+     [
+      "low",
+      "Short par 4",
+      "Back 325, KT 306. The plan clubs down off the tee to keep a full wedge in."
+     ]
+    ]
+   },
+   "13": {
+    "haz": [
+     [
+      "mod",
+      "Handicap 1",
+      "Longest par 4 on the card: 449 Back, 414 KT, 378 Legends. Bogey is a good result."
+     ]
+    ]
+   },
+   "14": {
+    "haz": [
+     [
+      "low",
+      "Longest hole",
+      "571 Back, 536 KT, 505 Legends. Plan three steady shots."
+     ]
+    ]
+   },
+   "18": {
+    "haz": [
+     [
+      "low",
+      "Short par 4",
+      "Back 287, KT 263. The plan clubs down off the tee to keep a full wedge in."
+     ]
+    ]
+   }
+  }
+ },
+ {
+  "id": "greyrock",
+  "name": "Grey Rock Golf Club",
+  "short": "Grey Rock",
+  "place": "Austin. Jay Morrish, opened 1992 (formerly Circle C).",
+  "homeTee": "Blue",
+  "tees": [
+   {
+    "name": "Gold",
+    "color": "#C9A227",
+    "rating": "74.6 / 139",
+    "y": [
+     423,
+     509,
+     193,
+     446,
+     380,
+     445,
+     542,
+     187,
+     317,
+     406,
+     459,
+     431,
+     168,
+     591,
+     323,
+     206,
+     497,
+     386
+    ]
+   },
+   {
+    "name": "Blue",
+    "color": "#2F6DB5",
+    "rating": "71.9 / 132",
+    "y": [
+     388,
+     477,
+     182,
+     404,
+     335,
+     417,
+     510,
+     161,
+     295,
+     381,
+     433,
+     410,
+     148,
+     537,
+     301,
+     191,
+     447,
+     361
+    ]
+   },
+   {
+    "name": "White",
+    "color": "#F2F2F2",
+    "rating": "69.4 / 127",
+    "y": [
+     322,
+     445,
+     164,
+     372,
+     277,
+     386,
+     489,
+     127,
+     269,
+     340,
+     379,
+     379,
+     121,
+     505,
+     251,
+     175,
+     413,
+     318
+    ]
+   },
+   {
+    "name": "Red",
+    "color": "#C23A2B",
+    "rating": "67.2 / 123",
+    "y": [
+     280,
+     422,
+     154,
+     348,
+     264,
+     319,
+     439,
+     98,
+     244,
+     306,
+     356,
+     356,
+     103,
+     476,
+     221,
+     156,
+     383,
+     290
+    ]
+   }
+  ],
+  "par": [
+   4,
+   5,
+   3,
+   4,
+   4,
+   4,
+   5,
+   3,
+   4,
+   4,
+   4,
+   4,
+   3,
+   5,
+   4,
+   3,
+   5,
+   4
+  ],
+  "hcp": [
+   7,
+   9,
+   15,
+   3,
+   13,
+   5,
+   1,
+   17,
+   11,
+   4,
+   6,
+   10,
+   18,
+   2,
+   12,
+   16,
+   14,
+   8
+  ],
+  "howItPlays": [
+   "Hill Country feel without big elevation change. Reviewers describe bunkers on most holes, water on a few, and a handful of short par 4s that give back strokes if you stay out of trouble.",
+   "The default tee is Blue at 6,378 yards (71.9 / 132). Holes 5, 9 and 15 are the short fours (295 to 335 from Blue), so the plan clubs down off the tee on those.",
+   "Hole shapes are not mapped yet. Every plan below comes from scorecard yardage and your club distances only, so the aim notes are defaults, not hole-specific."
+  ],
+  "footnote": "Greenskeeper shows an older card (Gold 6,855). This book follows GolfPass and Golf Advisor, which agree.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "All four tees: yardage, par, handicap, rating and slope. GolfPass and Golf Advisor match each other. The course site was not read.",
+    "Hole 16 Red is 156 yards on Golf Advisor and 118 on GolfPass. This book uses 156 because it sums to the 5,215 total."
+   ],
+   "unknown": [
+    "Hole shapes, dogleg direction and which side the hazards sit on.",
+    "Whether the water on the last holes matches current hole numbers."
+   ]
+  },
+  "links": [
+   [
+    "GolfPass scorecard",
+    "https://www.golfpass.com/courses/15638-grey-rock-golf-club/scorecard-and-layout"
+   ],
+   [
+    "Golf Advisor",
+    "https://golfadvisor.com/courses/15638-grey-rock-golf-club/"
+   ]
+  ],
+  "H": {
+   "5": {
+    "haz": [
+     [
+      "low",
+      "Short par 4",
+      "277 from White, 335 from Blue. The plan clubs down off the tee to keep a full wedge in."
+     ]
+    ]
+   },
+   "9": {
+    "haz": [
+     [
+      "low",
+      "Short par 4",
+      "269 from White, 295 from Blue. The plan clubs down off the tee to keep a full wedge in."
+     ]
+    ]
+   },
+   "13": {
+    "carry": true,
+    "haz": [
+     [
+      "crit",
+      "Water and sand around the green",
+      "A 2019 reviewer photo caption describes the green as surrounded by water and bunkers. Treat every miss as trouble."
+     ]
+    ],
+    "verify": "Confirm which sides the water is on.",
+    "aim": "Take enough club to carry the front edge and aim at the middle of the green. The caption puts water and sand on all sides, so a conservative target beats chasing a pin."
+   },
+   "14": {
+    "haz": [
+     [
+      "mod",
+      "Longest hole",
+      "Gold 591, Blue 537, White 505. Plan three steady shots, not a heroic second."
+     ]
+    ]
+   },
+   "15": {
+    "haz": [
+     [
+      "low",
+      "Short par 4",
+      "251 from White, 301 from Blue. The plan clubs down off the tee to keep a full wedge in."
+     ]
+    ]
+   },
+   "16": {
+    "carry": true,
+    "haz": [
+     [
+      "low",
+      "Water may be in play",
+      "One course profile says water comes into play on the last three holes. It uses older hole numbers, so verify before relying on it."
+     ]
+    ],
+    "verify": "Check for water on 16, 17 and 18."
+   },
+   "17": {
+    "haz": [
+     [
+      "low",
+      "Water may be in play",
+      "Same unverified note as 16."
+     ]
+    ],
+    "verify": "Check for water on 16, 17 and 18."
+   },
+   "18": {
+    "haz": [
+     [
+      "low",
+      "Water may be in play",
+      "Same unverified note as 16."
+     ]
+    ],
+    "verify": "Check for water on 16, 17 and 18."
+   }
+  }
+ },
+ {
+  "id": "shadowglen",
+  "name": "ShadowGlen Golf Club",
+  "short": "ShadowGlen",
+  "place": "Manor. Opened 2004, daily fee.",
+  "homeTee": "Blue",
+  "tees": [
+   {
+    "name": "Black",
+    "color": "#222222",
+    "rating": "74.2 / 139",
+    "y": [
+     399,
+     477,
+     419,
+     578,
+     343,
+     223,
+     446,
+     183,
+     513,
+     416,
+     472,
+     587,
+     446,
+     415,
+     210,
+     561,
+     142,
+     344
+    ]
+   },
+   {
+    "name": "Bronze",
+    "color": "#A5732F",
+    "rating": "72.7 / 132",
+    "y": [
+     377,
+     444,
+     390,
+     543,
+     315,
+     195,
+     414,
+     152,
+     468,
+     396,
+     453,
+     544,
+     406,
+     392,
+     190,
+     529,
+     117,
+     309
+    ]
+   },
+   {
+    "name": "Blue",
+    "color": "#2F6DB5",
+    "rating": "70.8 / 137",
+    "y": [
+     359,
+     343,
+     359,
+     506,
+     303,
+     173,
+     380,
+     146,
+     439,
+     381,
+     433,
+     523,
+     401,
+     381,
+     170,
+     510,
+     112,
+     256
+    ]
+   },
+   {
+    "name": "White",
+    "color": "#F2F2F2",
+    "rating": "rating not found",
+    "y": [
+     354,
+     324,
+     320,
+     444,
+     298,
+     128,
+     375,
+     131,
+     421,
+     305,
+     407,
+     460,
+     386,
+     355,
+     151,
+     449,
+     106,
+     221
+    ]
+   }
+  ],
+  "par": [
+   4,
+   4,
+   4,
+   5,
+   4,
+   3,
+   4,
+   3,
+   5,
+   4,
+   4,
+   5,
+   4,
+   4,
+   3,
+   5,
+   3,
+   4
+  ],
+  "hcp": [
+   12,
+   2,
+   8,
+   4,
+   18,
+   14,
+   6,
+   16,
+   10,
+   11,
+   5,
+   3,
+   7,
+   9,
+   15,
+   1,
+   17,
+   13
+  ],
+  "howItPlays": [
+   "Long and demanding. GolfPass says some consider it the toughest public course in Texas, with a wandering creek that cuts across the property. A reviewer photo caption describes oddly shaped bunkers on most holes.",
+   "The default tee is Blue: 6,175 yards at 70.8 / 137, a steep slope for the length. Bronze is 6,634 yards at 72.7 / 132 if you want more length. White is 5,635 yards, and its rating and slope were not found.",
+   "Holes 16 (par 5, dogleg left, bunkers across the fairway) and 18 (sharp dogleg left) are the documented ones. Everything else uses the default aim."
+  ],
+  "footnote": "Golf Advisor also lists a White set at 6,047 yards (69.7 / 126) that does not match this hole-by-hole White at 5,635. That conflict is unresolved. Bronze is 6,634 on the hole table and 6,629 on the tee list.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "Black, Bronze, Blue and White: yardage, par and handicap from GolfPass and Golf Advisor, which agree. Ratings come from Golf Advisor.",
+    "The course site was not read."
+   ],
+   "unknown": [
+    "Rating and slope for White, plus hole yardages for the 4,898-yard Green set.",
+    "Hole shapes, creek crossings and bunker positions beyond holes 16 and 18."
+   ]
+  },
+  "links": [
+   [
+    "GolfPass scorecard",
+    "https://www.golfpass.com/courses/22856-shadowglen-golf-club/scorecard-and-layout"
+   ],
+   [
+    "Golf Advisor",
+    "https://golfadvisor.com/courses/22856-shadowglen-golf-club"
+   ]
+  ],
+  "H": {
+   "16": {
+    "secondMax": "3h",
+    "haz": [
+     [
+      "mod",
+      "Handicap 1, bunkers across the fairway",
+      "GolfNow describes a dogleg-left par 5 with a series of bunkers crossing the fairway. 449 from White, 561 from Black."
+     ]
+    ],
+    "verify": "Bunker positions and the exact bend are not verified.",
+    "aim": "A dogleg left can run a straight ball out the far side, so choose a club that finishes short of the bend and stay short of the cross bunkers."
+   },
+   "17": {
+    "haz": [
+     [
+      "low",
+      "Short par 3",
+      "106 from White, 142 from Black, per the scorecard and a GolfNow description."
+     ]
+    ]
+   },
+   "18": {
+    "haz": [
+     [
+      "mod",
+      "Sharp dogleg left",
+      "GolfNow calls it a sharp dogleg-left par 4. It is only 221 from White and 256 from Blue, so a full driver is rarely needed."
+     ]
+    ],
+    "verify": "Distance to the corner is not verified. Check it before choosing a club.",
+    "aim": "A sharp dogleg left, so a straight ball can run through the turn. Take less club than the full distance and aim for the fairway short of the bend."
+   }
+  }
+ },
+ {
+  "id": "kizer",
+  "name": "Roy Kizer Golf Course",
+  "short": "Roy Kizer",
+  "place": "Austin, City of Austin. Randy Russell, opened 1994.",
+  "homeTee": "Blue",
+  "tees": [
+   {
+    "name": "Black",
+    "color": "#222222",
+    "rating": "72.2 / 125",
+    "y": [
+     330,
+     559,
+     450,
+     215,
+     444,
+     404,
+     414,
+     178,
+     410,
+     370,
+     468,
+     411,
+     168,
+     535,
+     137,
+     333,
+     537,
+     456
+    ]
+   },
+   {
+    "name": "Blue",
+    "color": "#2F6DB5",
+    "rating": "70.0 / 117",
+    "y": [
+     312,
+     550,
+     399,
+     204,
+     408,
+     392,
+     397,
+     151,
+     398,
+     348,
+     424,
+     402,
+     158,
+     510,
+     127,
+     290,
+     500,
+     442
+    ]
+   },
+   {
+    "name": "White",
+    "color": "#F2F2F2",
+    "rating": "68.0 / 111",
+    "y": [
+     310,
+     530,
+     376,
+     190,
+     397,
+     363,
+     376,
+     141,
+     363,
+     330,
+     416,
+     374,
+     146,
+     494,
+     126,
+     281,
+     486,
+     420
+    ]
+   },
+   {
+    "name": "Green",
+    "color": "#3B7D4F",
+    "rating": "65.9 / 103",
+    "y": [
+     301,
+     504,
+     366,
+     165,
+     370,
+     351,
+     356,
+     122,
+     335,
+     313,
+     388,
+     340,
+     132,
+     479,
+     124,
+     275,
+     455,
+     388
+    ]
+   },
+   {
+    "name": "Red",
+    "color": "#C23A2B",
+    "rating": "67.4 / 109",
+    "y": [
+     278,
+     412,
+     298,
+     140,
+     316,
+     327,
+     284,
+     108,
+     304,
+     292,
+     347,
+     302,
+     95,
+     424,
+     105,
+     222,
+     436,
+     328
+    ]
+   }
+  ],
+  "par": [
+   4,
+   5,
+   4,
+   3,
+   4,
+   4,
+   4,
+   3,
+   4,
+   4,
+   4,
+   4,
+   3,
+   5,
+   3,
+   4,
+   5,
+   4
+  ],
+  "hcp": [
+   17,
+   1,
+   13,
+   9,
+   3,
+   11,
+   7,
+   15,
+   5,
+   16,
+   2,
+   12,
+   14,
+   8,
+   18,
+   10,
+   4,
+   6
+  ],
+  "howItPlays": [
+   "A links-style city course built on an old water treatment site, with lakes and marsh. Reviewers call it wide open and a good scoring course, with wind and water on a few holes.",
+   "The default tee is Blue: 6,412 yards at 70.0 / 117. Reviewers call the course a good scoring track. Black is 6,819 yards at 72.2 / 125 if you want more length.",
+   "Which holes have water is not identified yet, so look for lakes before you pick a line. Only hole 11 has a specific note."
+  ],
+  "footnote": "The Black tee is 6,819 on the hole table and 6,749 on an older tee list. This book uses the hole table, which sums to 6,819. Red is the women's rating.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "All five tees: yardage, par and handicap from GolfPass, matching Golf Advisor. Ratings from a tee list on 1golf.eu, which may be older.",
+    "The course site was not read."
+   ],
+   "unknown": [
+    "Which holes have water and where.",
+    "Hole shapes."
+   ]
+  },
+  "links": [
+   [
+    "GolfPass scorecard",
+    "https://www.golfpass.com/courses/2745-roy-kizer-golf-course/scorecard-and-layout"
+   ],
+   [
+    "Golf Advisor",
+    "https://www.golfadvisor.com/courses/2745-roy-kizer-golf-course/"
+   ]
+  ],
+  "H": {
+   "11": {
+    "haz": [
+     [
+      "mod",
+      "Long par 4, often into the wind",
+      "GolfPass calls it the toughest par: 468 from Black, 416 from White. Take bogey and move on."
+     ]
+    ]
+   }
+  }
+ },
+ {
+  "id": "clay",
+  "name": "Jimmy Clay Golf Course",
+  "short": "Jimmy Clay",
+  "place": "Austin, City of Austin. Joe Finger, opened 1974.",
+  "homeTee": "Blue",
+  "tees": [
+   {
+    "name": "Black",
+    "color": "#222222",
+    "rating": "73.8 / 126",
+    "y": [
+     408,
+     155,
+     392,
+     564,
+     114,
+     316,
+     502,
+     444,
+     407,
+     519,
+     426,
+     227,
+     405,
+     204,
+     378,
+     559,
+     437,
+     474
+    ]
+   },
+   {
+    "name": "Blue",
+    "color": "#2F6DB5",
+    "rating": "71.8 / 124",
+    "y": [
+     385,
+     134,
+     361,
+     546,
+     105,
+     291,
+     468,
+     425,
+     386,
+     495,
+     411,
+     185,
+     376,
+     174,
+     358,
+     526,
+     399,
+     420
+    ]
+   },
+   {
+    "name": "White",
+    "color": "#F2F2F2",
+    "rating": "69.1 / 119",
+    "y": [
+     367,
+     118,
+     307,
+     531,
+     100,
+     284,
+     420,
+     352,
+     325,
+     474,
+     398,
+     167,
+     336,
+     160,
+     342,
+     501,
+     320,
+     398
+    ]
+   },
+   {
+    "name": "Green",
+    "color": "#3B7D4F",
+    "rating": "65.9 / 111",
+    "y": [
+     315,
+     110,
+     280,
+     474,
+     98,
+     277,
+     415,
+     316,
+     319,
+     408,
+     378,
+     138,
+     331,
+     137,
+     333,
+     438,
+     293,
+     329
+    ]
+   },
+   {
+    "name": "Red",
+    "color": "#C23A2B",
+    "rating": "69.8 / 119",
+    "y": [
+     311,
+     102,
+     271,
+     461,
+     96,
+     270,
+     387,
+     312,
+     274,
+     406,
+     374,
+     133,
+     303,
+     133,
+     326,
+     434,
+     290,
+     326
+    ]
+   }
+  ],
+  "par": [
+   4,
+   3,
+   4,
+   5,
+   3,
+   4,
+   5,
+   4,
+   4,
+   5,
+   4,
+   3,
+   4,
+   3,
+   4,
+   5,
+   4,
+   4
+  ],
+  "hcp": [
+   7,
+   15,
+   3,
+   9,
+   17,
+   11,
+   13,
+   1,
+   5,
+   8,
+   10,
+   14,
+   6,
+   12,
+   16,
+   18,
+   4,
+   2
+  ],
+  "howItPlays": [
+   "A flat Joe Finger design that works around Williamson Creek, known for generous fairways and large, elevated greens. Reviewers call it a tame, scoreable muni that is groomed well.",
+   "The default tee is Blue: 6,445 yards at 71.8 / 124. Black is 6,931 yards at 73.8 / 126 if you want more length. It shares a site with Roy Kizer.",
+   "Hazards are not documented here yet, so every plan comes from scorecard yardage and your club distances alone."
+  ],
+  "footnote": "A second source lists Black holes 4 and 5 as 558 and 103 instead of 564 and 114. This book follows GolfPass and Golf Advisor, which agree. Red and Green(W) ratings are women's.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "All five tees: yardage, par and handicap from GolfPass and Golf Advisor. Ratings from GolfPass.",
+    "The course site was not read."
+   ],
+   "unknown": [
+    "Hazards, creek holes and hole shapes."
+   ]
+  },
+  "links": [
+   [
+    "GolfPass scorecard",
+    "https://www.golfpass.com/courses/15063-jimmy-clay-golf-course/scorecard-and-layout"
+   ],
+   [
+    "Golf Advisor",
+    "https://www.golfadvisor.com/courses/15063-jimmy-clay-golf-course"
+   ]
+  ],
+  "H": {}
+ },
+ {
+  "id": "lions",
+  "name": "Lions Municipal Golf Course",
+  "short": "Lions",
+  "place": "Austin, City of Austin. Austin's classic muni, around since the 1920s.",
+  "homeTee": "Blue",
+  "tees": [
+   {
+    "name": "Blue",
+    "color": "#2F6DB5",
+    "rating": "69.2 / 114",
+    "y": [
+     369,
+     505,
+     400,
+     155,
+     375,
+     380,
+     161,
+     445,
+     370,
+     295,
+     325,
+     500,
+     161,
+     525,
+     139,
+     403,
+     183,
+     310
+    ]
+   },
+   {
+    "name": "White",
+    "color": "#F2F2F2",
+    "rating": "67.3 / 110",
+    "y": [
+     359,
+     487,
+     378,
+     138,
+     308,
+     363,
+     146,
+     430,
+     355,
+     276,
+     319,
+     472,
+     139,
+     508,
+     126,
+     381,
+     165,
+     292
+    ]
+   },
+   {
+    "name": "Red",
+    "color": "#C23A2B",
+    "rating": "63.1 / 100",
+    "y": [
+     330,
+     402,
+     306,
+     124,
+     290,
+     263,
+     128,
+     425,
+     303,
+     255,
+     302,
+     424,
+     108,
+     405,
+     105,
+     363,
+     118,
+     280
+    ]
+   }
+  ],
+  "par": [
+   4,
+   5,
+   4,
+   3,
+   4,
+   4,
+   3,
+   5,
+   4,
+   4,
+   4,
+   5,
+   3,
+   5,
+   3,
+   4,
+   3,
+   4
+  ],
+  "hcp": [
+   7,
+   1,
+   5,
+   17,
+   9,
+   13,
+   15,
+   3,
+   11,
+   8,
+   10,
+   2,
+   16,
+   4,
+   18,
+   6,
+   14,
+   12
+  ],
+  "howItPlays": [
+   "Austin's classic muni at about 6,000 yards. Reviewers describe lots of doglegs, blind tee shots that puzzle first-timers, small greens, and weekend rounds that can run five hours.",
+   "Blue is the longest set at 6,001 yards (69.2 / 114), so it is the default. The course is short for a driver, and the plan clubs down off the tee wherever a full driver would leave too short a wedge.",
+   "Only holes 16 (blind tee shot) and 17 (par 3 over water) are documented, and both come from text that may use older hole numbers."
+  ],
+  "footnote": "Sources conflict. Golf Advisor shows a different hole table, handicap row and ratings (69.8 / 123 blue). This book follows Greenskeeper, whose hole yardages sum to its totals and whose handicap row 18Birdies matches. White rating on another site is 68.0 / 118.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "Blue, White and Red: yardage, par and handicap from Greenskeeper, with 18Birdies matching the Blue yardage and handicap row.",
+    "Ratings and slopes differ between sites. The ones shown are Greenskeeper's."
+   ],
+   "unknown": [
+    "Where the blind tee shot is and where the water sits on 17.",
+    "Hole shapes and doglegs by hole."
+   ]
+  },
+  "links": [
+   [
+    "Greenskeeper scorecard",
+    "https://www.greenskeeper.org/texas/Austin/lions_municipal_golf_course/scorecard.cfm"
+   ],
+   [
+    "18Birdies profile",
+    "https://18birdies.com/golf-courses/club/8ae926b0-86ac-11e4-8c28-020000005b00/lions-municipal"
+   ]
+  ],
+  "H": {
+   "16": {
+    "haz": [
+     [
+      "mod",
+      "Blind tee shot",
+      "GolfPass describes a blind tee shot on a 381-yard par 4. That matches the 16th from White, but the text may use older hole numbers."
+     ]
+    ],
+    "verify": "Confirm which hole has the blind tee shot and where to aim."
+   },
+   "17": {
+    "carry": true,
+    "haz": [
+     [
+      "crit",
+      "Par 3 over water",
+      "A Golf Advisor photo caption describes the 17th as a par 3 over water. 165 from White, 183 from Blue."
+     ]
+    ],
+    "verify": "Confirm where the water sits.",
+    "aim": "Take enough club to carry the water and aim at the middle of the green. Which side the water sits on is not verified."
+   }
+  }
+ },
+ {
+  "id": "williams",
+  "name": "Morris Williams Golf Course",
+  "short": "Morris Williams",
+  "place": "Austin, City of Austin. Leon Howard, opened 1964.",
+  "homeTee": "Blue",
+  "tees": [
+   {
+    "name": "Black",
+    "color": "#222222",
+    "rating": "73.0 / 124",
+    "y": [
+     377,
+     573,
+     218,
+     391,
+     531,
+     427,
+     422,
+     190,
+     431,
+     411,
+     526,
+     192,
+     348,
+     201,
+     409,
+     412,
+     551,
+     431
+    ]
+   },
+   {
+    "name": "Blue",
+    "color": "#2F6DB5",
+    "rating": "70.9 / 121",
+    "y": [
+     345,
+     555,
+     191,
+     380,
+     512,
+     392,
+     404,
+     178,
+     380,
+     390,
+     505,
+     181,
+     330,
+     141,
+     367,
+     390,
+     522,
+     405
+    ]
+   }
+  ],
+  "par": [
+   4,
+   5,
+   3,
+   4,
+   5,
+   4,
+   4,
+   3,
+   4,
+   4,
+   5,
+   3,
+   4,
+   3,
+   4,
+   4,
+   5,
+   4
+  ],
+  "hcp": [
+   15,
+   13,
+   3,
+   7,
+   17,
+   5,
+   1,
+   9,
+   11,
+   18,
+   14,
+   10,
+   8,
+   4,
+   6,
+   2,
+   12,
+   16
+  ],
+  "howItPlays": [
+   "A 1964 Leon Howard design with small, slightly elevated, contoured greens and rolling terrain. GolfNow's profile calls it probably the toughest of the city's courses.",
+   "The default tee is Blue: 6,568 yards at 70.9 / 121. Black is 7,041 yards at 73.0 / 124. The shorter sets (White about 5,970, Green, Red) are listed but their holes are missing.",
+   "Hole 3 is a long par 3 over water that reviewers say backs up the whole course. The rest is scorecard only."
+  ],
+  "footnote": "Sources disagree on totals and ratings: the hole tables sum to 7,041 and 6,568, one tee list shows 7,023 and 6,607, and 18Birdies rates Black 74.1 / 132. Ratings shown are GolfPass's.",
+  "dataCheck": {
+   "confirmed": [],
+   "approx": [
+    "Black and Blue: yardage, par and handicap from GolfPass, with 18Birdies matching the Black card.",
+    "The course site was not read."
+   ],
+   "unknown": [
+    "Hole yardages for White (about 5,970), Green (about 5,243 to 5,342) and Red (4,973). A scorecard photo would add them.",
+    "Water position on hole 3, and all hole shapes."
+   ]
+  },
+  "links": [
+   [
+    "GolfPass scorecard",
+    "https://www.golfpass.com/courses/15065-morris-williams-golf-course/scorecard-and-layout"
+   ],
+   [
+    "18Birdies profile",
+    "https://18birdies.com/golf-courses/club/8ca4b960-86ac-11e4-8c28-020000005b00/morris-williams"
+   ]
+  ],
+  "H": {
+   "3": {
+    "carry": true,
+    "haz": [
+     [
+      "crit",
+      "Long par 3 over water",
+      "Reviewers call it a long, challenging par 3 over water that causes backups. 218 from Black, 191 from Blue."
+     ]
+    ],
+    "verify": "Confirm where the water sits and the front edge distance.",
+    "aim": "Pick the club that carries and aim at the middle of the green. The water side is not verified."
+   }
+  }
+ }
+];
+
+var ORDER=['plumcreek','kissing','greyrock','shadowglen','kizer','clay','lions','williams'];
+COURSES.sort(function(a,b){return ORDER.indexOf(a.id)-ORDER.indexOf(b.id)});
+
+/* ============ STATE ============ */
+var state={view:'home',cid:null,tab:'summary',hole:1,tees:{},goal:'bogey'};
+var KEY='austin-yardage-v2';
+function save(){try{localStorage.setItem(KEY,JSON.stringify({bag:bag,tees:state.tees,cid:state.cid,hole:state.hole,tab:state.tab,view:state.view,goal:state.goal}))}catch(e){}}
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY)||'null');if(s){if(s.bag){for(var k in DEFAULT_BAG){if(s.bag[k])bag[k]=s.bag[k]}}state.tees=s.tees||{};if(s.goal==='par'||s.goal==='bogey')state.goal=s.goal;if(s.cid&&byId(s.cid)&&byId(s.cid).tees){state.cid=s.cid;state.view=s.view||'course';state.tab=s.tab||'summary';state.hole=s.hole||1}}}catch(e){}}
+function byId(id){return COURSES.filter(function(c){return c.id===id})[0]}
+function cur(){return byId(state.cid)}
+function curTee(c){var n=state.tees[c.id]||c.homeTee;return c.tees.filter(function(t){return t.name===n})[0]||c.tees[0]}
+function sum(a){return a.reduce(function(x,y){return x+y},0)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+
+/* ============ VIEWS ============ */
+function renderTop(){
+  var t=document.getElementById('top');
+  if(state.view==='home'){t.innerHTML='<h1>Austin Yardage Books</h1><div class="mute" style="font-size:15px">Club plans for a right-handed golfer who hits it straight</div>';return}
+  var c=cur(),tee=curTee(c);
+  var seg=c.tees.map(function(x){return '<button data-act="tee" data-v="'+x.name+'" aria-pressed="'+(x.name===tee.name)+'"><span class="dot" style="background:'+x.color+'"></span>'+x.name+' '+sum(x.y).toLocaleString()+'</button>'}).join('');
+  t.innerHTML='<div class="row"><button class="back" data-act="home">Courses</button><h1>'+c.short+'</h1></div><div class="seg">'+seg+'</div>'+
+   '<div class="tabs" role="tablist"><button class="tab" role="tab" data-act="tab" data-v="summary" aria-selected="'+(state.tab==='summary')+'">Summary</button><button class="tab" role="tab" data-act="tab" data-v="holes" aria-selected="'+(state.tab==='holes')+'">Holes</button></div>';
+}
+function homeView(){
+  var h='<p class="mute" style="margin-top:16px">Pick a course. Plans use your club distances, which you can edit on each summary page.</p>';
+  COURSES.forEach(function(c){
+    if(c.tees){
+      var t=curTee(c);
+      h+='<button class="course" data-act="open" data-v="'+c.id+'"><div class="big">'+c.name+'</div><div class="mute" style="font-size:16px">Par '+sum(c.par)+', '+c.tees.length+' tees, '+t.name+' '+sum(t.y).toLocaleString()+' yards</div></button>';
+    } else {
+      h+='<div class="course off"><div class="big">'+c.name+'</div><div class="mute" style="font-size:16px">Not loaded yet</div></div>';
+    }
+  });
+  return h;
+}
+function sevLabel(s){return s==='crit'?'Serious':s==='mod'?'Watch':'Minor'}
+function holeObj(c,n){var h=c.H[n]||{};return {par:c.par[n-1],tee:h.tee,secondMax:h.secondMax,carry:h.carry,haz:h.haz,aim:h.aim,verify:h.verify}}
+function goalOf(par){return state.goal==='par'?par:par+1}
+function planAbbr(shots){return shots.map(function(s){return CLUB_SHORT[s.club]}).join(' then ')}
+
+function summaryView(c){
+  var tee=curTee(c),h='';
+  h+='<h2>How it plays</h2>'+c.howItPlays.map(function(p){return '<p>'+esc(p)+'</p>'}).join('');
+  h+='<p class="note">'+esc(c.footnote)+'</p>';
+  h+='<div class="card"><h3>'+tee.name+' tees</h3><div class="mute">'+sum(tee.y).toLocaleString()+' yards, par '+sum(c.par)+', rating and slope '+tee.rating+'</div></div>';
+  h+='<h2>Game plan</h2><div class="card" style="padding:6px 10px"><table><tr><th>Hole</th><th class="n">Par</th><th class="n">Yds</th><th>Plan</th><th class="n">Goal</th></tr>';
+  for(var n=1;n<=18;n++){
+    var ho=holeObj(c,n),yd=tee.y[n-1],sh=plan(ho,yd);
+    h+='<tr><td class="num"><a href="#" data-act="gohole" data-v="'+n+'">'+n+'</a></td><td class="num n">'+ho.par+'</td><td class="num n">'+yd+'</td><td>'+planAbbr(sh)+'</td><td class="num n">'+goalOf(ho.par)+'</td></tr>';
+  }
+  h+='</table></div><div class="seg" style="margin-top:10px"><button data-act="goal" data-v="par" aria-pressed="'+(state.goal==='par')+'">Goal: par</button><button data-act="goal" data-v="bogey" aria-pressed="'+(state.goal==='bogey')+'">Goal: bogey</button></div><p class="note" style="margin-top:8px">Par goal goes for the green from about a 5 iron distance. Bogey goal lays up sooner. Tap a hole number to open its card.</p>';
+  var dangers=[];
+  for(var k=1;k<=18;k++){var hh=c.H[k];if(hh&&hh.haz){hh.haz.forEach(function(z){if(z[0]!=='low')dangers.push([k,z])})}}
+  h+='<h2>Holes to respect</h2>';
+  if(dangers.length){h+=dangers.map(function(d){return '<div class="haz '+d[1][0]+'"><b>Hole '+d[0]+': '+esc(d[1][1])+'</b><span class="note">'+esc(d[1][2])+'</span></div>'}).join('')}
+  else h+='<p class="mute">None documented yet.</p>';
+  h+='<h2>Your game</h2><p>Right-handed, hits it relatively straight, 6\'4" and 185 lb. Bag: Ping G440 driver, 4 wood, 3 wood and 3 hybrid; TaylorMade P790 5 iron through A wedge; 54 and 58 degree wedges. The default aim is the center of the fairway or green, and the plan picks the club that leaves a full wedge in rather than always taking the longest club.</p>';
+  h+='<h2>Your distances</h2><div class="card"><p class="note">Assumed total yards with roll, low to high, for your height and weight. They are estimates, not measurements. Replace them with your real numbers and every plan updates.</p><div class="bag"><b></b><b class="note">Low</b><b class="note">High</b>';
+  CLUB_ORDER.forEach(function(k){h+='<span>'+CLUB_LABEL[k]+'<br><span class="note" style="font-size:14px">'+CLUB_BRAND[k]+'</span></span><input inputmode="numeric" data-act="bag" data-club="'+k+'" data-i="0" value="'+bag[k][0]+'"><input inputmode="numeric" data-act="bag" data-club="'+k+'" data-i="1" value="'+bag[k][1]+'">'});
+  h+='</div><button class="btn" data-act="bagreset">Reset to assumed distances</button></div>';
+  h+='<h2>Data check</h2><div class="card dc"><b>Confirmed from the course</b><ul>'+(c.dataCheck.confirmed.length?c.dataCheck.confirmed.map(function(x){return '<li>'+esc(x)+'</li>'}).join(''):'<li>Nothing yet. The course\'s own scorecard has not been read.</li>')+'</ul><b>Approximate</b><ul>'+c.dataCheck.approx.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul><b>Unknown</b><ul>'+c.dataCheck.unknown.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>';
+  h+='<p class="note" style="margin-top:14px">Sources: '+c.links.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+'</a>'}).join(', ')+'</p>';
+  return h;
+}
+
+function ladder(shots,yds){
+  var X0=16,X1=324,W=X1-X0,Y=40,s='<svg class="lad" viewBox="0 0 340 82" role="img" aria-label="Shot plan along the hole">';
+  s+='<line class="base" x1="'+X0+'" y1="'+Y+'" x2="'+X1+'" y2="'+Y+'"/>';
+  s+='<circle class="mk" cx="'+X0+'" cy="'+Y+'" r="7"/><text x="'+X0+'" y="'+(Y+28)+'">Tee</text>';
+  shots.forEach(function(sh,i){
+    var x=X0+W*Math.min(sh.pos,yds)/yds,last=i===shots.length-1;
+    if(!last){
+      s+='<circle class="mk" cx="'+x.toFixed(1)+'" cy="'+Y+'" r="7"/>';
+      s+='<text x="'+x.toFixed(1)+'" y="'+(Y-16)+'">'+CLUB_SHORT[sh.club]+'</text>';
+      if(X1-x>62) s+='<text class="lt" x="'+x.toFixed(1)+'" y="'+(Y+28)+'">'+sh.left+' left</text>';
+    }
+  });
+  s+='<path class="flag" d="M'+X1+' '+(Y-26)+' L'+(X1+14)+' '+(Y-20)+' L'+X1+' '+(Y-14)+' Z"/><line x1="'+X1+'" y1="'+(Y-26)+'" x2="'+X1+'" y2="'+Y+'" stroke="var(--ink)" stroke-width="2"/>';
+  s+='<text x="'+(X1-6)+'" y="'+(Y+28)+'">'+yds+'</text></svg>';
+  return s;
+}
+function holeView(c){
+  var n=state.hole,tee=curTee(c),yd=tee.y[n-1],ho=holeObj(c,n),sh=plan(ho,yd),h='';
+  var strip=''; for(var i=1;i<=18;i++){var hz=c.H[i]&&c.H[i].haz&&c.H[i].haz.some(function(z){return z[0]==='crit'});strip+='<button class="hbtn" data-act="gohole" data-v="'+i+'" aria-pressed="'+(i===n)+'">'+i+(hz?'<i></i>':'')+'</button>'}
+  h+='<div class="hstrip">'+strip+'</div>';
+  h+='<div class="card"><div class="hhead"><div class="hnum">'+n+'</div><div class="hmeta"><div class="y">'+yd+' yds</div><div class="s">Par '+ho.par+', handicap '+c.hcp[n-1]+', goal '+goalOf(ho.par)+'</div></div></div>';
+  h+=ladder(sh,yd);
+  h+='<ul class="shots">'+sh.map(function(s){
+    var last=s===sh[sh.length-1];
+    var cl=CLUB_LABEL[s.club]; var d=(s.cd)?(s.isCarry?' carries ':' about ')+s.cd:(last?'':' about '+s.dist);
+    return '<li><span class="lab">'+s.label+'</span><span class="cl">'+cl+'<span class="note" style="font-size:17px;font-weight:500;display:block">'+d+'</span></span><span class="lf">'+(last?s.dist+' to the pin':s.left+' left')+'</span></li>';
+  }).join('')+'</ul>';
+  if(ho.carry){ if(sh[0].noclear) h+='<div class="warn"><b>Long carry:</b> even the short end of your longest club does not clearly cover this. Consider a safe play short of the hazard and a chip or pitch from there.</div>'; else h+='<p class="note" style="margin-top:6px">Water or sand in front, so the club is picked to carry on the short end of your range.</p>'; }
+  h+='</div>';
+  if(ho.haz){h+='<div class="card">'+ho.haz.map(function(z){return '<div class="haz '+z[0]+'"><span class="sev">'+sevLabel(z[0])+'</span><b>'+esc(z[1])+'</b><span class="note">'+esc(z[2])+'</span></div>'}).join('')+'</div>'}
+  var aim=ho.aim||(ho.par===3?'Aim at the middle of the green.':'Default aim: the center of the fairway. Hole shape is not mapped yet, so check for trouble from the tee.');
+  h+='<div class="aimnote"><b>Aim note</b><br>'+esc(aim)+'</div>';
+  if(ho.verify) h+='<div class="warn"><b>Check on the day:</b> '+esc(ho.verify)+'</div>';
+  h+='<div class="note" style="margin-top:12px">Overhead map not drawn yet for this hole. Send a satellite screenshot and it can be added.</div>';
+  h+='<div class="pager"><button data-act="prev"'+(n===1?' disabled style="opacity:.4"':'')+'>'+(n===1?'First hole':'Hole '+(n-1))+'</button><button data-act="next"'+(n===18?' disabled style="opacity:.4"':'')+'>'+(n===18?'Last hole':'Hole '+(n+1))+'</button></div>';
+  return h;
+}
+function render(keepScroll){
+  var y=window.scrollY;
+  renderTop();
+  var app=document.getElementById('app');
+  if(state.view==='home') app.innerHTML=homeView();
+  else { var c=cur(); app.innerHTML=state.tab==='summary'?summaryView(c):holeView(c); }
+  var sg=document.querySelector('.seg'),sel=document.querySelector('.seg [aria-pressed="true"]');
+  if(sg&&sel) sg.scrollLeft=Math.max(0,sel.offsetLeft-sg.offsetLeft-8);
+  window.scrollTo(0,keepScroll?y:0);
+  save();
+}
+
+/* ============ EVENTS ============ */
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-act]'); if(!el||el.tagName==='INPUT') return;
+  var a=el.getAttribute('data-act'),v=el.getAttribute('data-v');
+  if(a==='gohole'||a==='tab'||a==='open') e.preventDefault();
+  if(a==='open'){state.cid=v;state.view='course';state.tab='summary';render()}
+  else if(a==='home'){state.view='home';render()}
+  else if(a==='tab'){state.tab=v;render()}
+  else if(a==='tee'){state.tees[state.cid]=v;render(true)}
+  else if(a==='gohole'){state.hole=+v;state.tab='holes';render()}
+  else if(a==='prev'){if(state.hole>1){state.hole--;render()}}
+  else if(a==='next'){if(state.hole<18){state.hole++;render()}}
+  else if(a==='goal'){state.goal=v;render(true)}
+  else if(a==='bagreset'){bag=JSON.parse(JSON.stringify(DEFAULT_BAG));render(true)}
+});
+document.addEventListener('change',function(e){
+  var el=e.target; if(el.getAttribute('data-act')!=='bag') return;
+  var k=el.getAttribute('data-club'),i=+el.getAttribute('data-i'),val=parseInt(el.value,10);
+  if(isNaN(val)||val<40||val>340){render(true);return}
+  bag[k][i]=val; if(bag[k][0]>bag[k][1]){var t=bag[k][0];bag[k][0]=bag[k][1];bag[k][1]=t}
+  render(true);
+});
+var tx=null;
+document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',function(e){
+  if(tx===null||state.view!=='course'||state.tab!=='holes') return;
+  var dx=e.changedTouches[0].clientX-tx; tx=null;
+  if(e.target.closest('.hstrip')) return;
+  if(dx<-70&&state.hole<18){state.hole++;render()} else if(dx>70&&state.hole>1){state.hole--;render()}
+},{passive:true});
+
+load(); render();
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+if(typeof module!=='undefined'){module.exports={plan:plan,COURSES:COURSES,bag:bag}}
+</script>
+</body>
+</html>
